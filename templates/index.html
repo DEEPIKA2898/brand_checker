@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Brand Name Checker</title>
+
+<style>
+
+body{
+font-family: Arial;
+background:#f4f6f8;
+margin:0;
+}
+
+.container{
+max-width:750px;
+margin:40px auto;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 3px 10px rgba(0,0,0,0.1);
+margin-bottom:20px;
+}
+
+h1{
+text-align:center;
+}
+
+input,textarea{
+width:100%;
+padding:10px;
+margin-top:10px;
+margin-bottom:20px;
+border-radius:6px;
+border:1px solid #ccc;
+}
+
+button{
+background:#007bff;
+color:white;
+border:none;
+padding:12px;
+border-radius:6px;
+cursor:pointer;
+font-size:16px;
+}
+
+button:hover{
+background:#0056b3;
+}
+
+.spinner{
+display:none;
+color:#007bff;
+margin-top:10px;
+}
+
+ul{
+padding-left:20px;
+}
+
+.pros li::before{
+content:"✅ ";
+}
+
+.cons li::before{
+content:"❌ ";
+}
+
+.alternatives li::before{
+content:"💡 ";
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Brand Name Checker</h1>
+
+<div class="card">
+
+<form method="POST" id="form">
+
+<label>Proposed Brand Name</label>
+<input type="text" name="brand_name" required>
+
+<label>Business Description</label>
+<textarea name="business_desc" rows="4" required></textarea>
+
+<button type="submit">Check Name</button>
+
+<div class="spinner" id="spinner">
+Generating AI result...
+</div>
+
+</form>
+
+</div>
+
+{% if result %}
+
+{% if result.error %}
+
+<div class="card">
+<strong>Error:</strong> {{result.error}}
+</div>
+
+{% else %}
+
+<div class="card">
+<h3>Ratings</h3>
+<p>{{result.ratings|join('<br>')|safe}}</p>
+</div>
+
+<div class="card pros">
+<h3>Pros</h3>
+<ul>
+{% for p in result.pros %}
+<li>{{p|safe}}</li>
+{% endfor %}
+</ul>
+</div>
+
+<div class="card cons">
+<h3>Cons</h3>
+<ul>
+{% for c in result.cons %}
+<li>{{c|safe}}</li>
+{% endfor %}
+</ul>
+</div>
+
+<div class="card alternatives">
+<h3>Alternative Names</h3>
+<ul>
+{% for a in result.alternatives %}
+<li>{{a|safe}}</li>
+{% endfor %}
+</ul>
+</div>
+
+{% endif %}
+
+{% endif %}
+
+</div>
+
+<script>
+
+const form=document.getElementById("form");
+const spinner=document.getElementById("spinner");
+
+form.addEventListener("submit",()=>{
+spinner.style.display="block";
+});
+
+</script>
+
+</body>
+</html>
